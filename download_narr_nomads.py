@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals, division, print_function
 
-# download NARR (for NoahMP and WRF) from nomads
+# description: Download NARR from nomads.
+# author: Hui ZHENG
+# email: woolf1988@qq.com
+# date: 2015-03-20
 
 import sys
 import os
