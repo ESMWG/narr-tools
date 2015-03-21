@@ -58,8 +58,8 @@ def download_file(rpath, lpath):
 
 def download_dataset(root='.', begtime=None, endtime=None, subset=None,
          flatdir=False, verbosity=False):
-    if subset is None:
-        subset = ['a',]
+    if subset is None or subset == '':
+        subset = 'a'
     dt = begtime
     while dt < endtime:
         for ss in subset:
@@ -84,12 +84,11 @@ import argparse
 import dateutil.parser
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Download NARR 3-hourly product from NOMADS.')
-    parser.add_argument('-s', '--subset',
-                        help='subset (a or b, default: a,b)',
-                        default='a,b', type=str)
-    parser.add_argument('-r', '--root',
-                        help='root directory for local storage (default: current directory)',
-                        default=os.getcwd(), type=str)
+    parser.add_argument('root', type=str,
+                        help='root directory for local storage (default: current directory)')
+    parser.add_argument('-s', '--subset', choices=['a', 'b', 'ab'],
+                        help='subset (default: ab)',
+                        default='ab', type=str)
     parser.add_argument('-b', '--begtime',
                         help='start date and time (default: 19790101T00)',
                         default='19790101T00', type=str)
@@ -102,15 +101,14 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbosity',
                         help='explain what is being done', action='store_true')
     args = parser.parse_args()
-    if args.subset:
-        subset = [x.lower() for x in args.subset.split(',') if x.lower() in ('a', 'b')]
-        if subset == set():
-            print('ERROR: ', subset, ' is(are) not valid subset')
-            print('valid subset: a or b')
-            sys.exit(1)
+    try:
+        os.makedirs(root, exist_ok=True)
+    except:
+        print('unable to write directory: ' + args.root, file=sys.stderr)
+        sys.exit(1)
     download_dataset(root=args.root,
                      begtime=dateutil.parser.parse(args.begtime),
                      endtime=dateutil.parser.parse(args.endtime),
-                     subset=subset,
+                     subset=args.subset,
                      flatdir=args.flatdir,
                      verbosity=args.verbosity)
