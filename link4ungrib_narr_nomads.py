@@ -52,7 +52,7 @@ def linkfiles(files, desroot):
         print('Error: directory (' + desroot + ') does not exist!')
         return
     if not os.access(desroot, os.W_OK):
-        print('Error: directory (' + desroot + ') does not writable!')
+        print('Error: directory (' + desroot + ') is not writable!')
         return
     
     for oldfile in glob.glob(os.path.join(desroot,LINK_PREFIX+'*')):
