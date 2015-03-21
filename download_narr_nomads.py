@@ -17,9 +17,9 @@ import time
 from datetime import datetime, timedelta
 
 RROOT = 'ftp://nomads.ncdc.noaa.gov/NARR'
-FOLD_TMP = '{year:04d}{month:02d}/{year:04d}{month:02d}{day:02d}'
+DIR_TMP = '{year:04d}{month:02d}/{year:04d}{month:02d}{day:02d}'
 FLNM_TMP = 'narr-{subset:1s}_221_{year:04d}{month:02d}{day:02d}_{hour:02d}00_000.grb'
-DATETIME_DELTA = timedelta(hours=3)
+TIME_DELTA = timedelta(hours=3)
 
 def download_file(rpath, lpath):
     """
@@ -63,7 +63,7 @@ def download_dataset(root='.', begtime=None, endtime=None, subset=None,
     dt = begtime
     while dt < endtime:
         for ss in subset:
-            fold = FOLD_TMP.format(year=dt.year, month=dt.month, day=dt.day)
+            fold = DIR_TMP.format(year=dt.year, month=dt.month, day=dt.day)
             flnm = FLNM_TMP.format(subset=ss,
                                     year=dt.year, month=dt.month, day=dt.day, hour=dt.hour)
             if flatdir:
@@ -77,7 +77,7 @@ def download_dataset(root='.', begtime=None, endtime=None, subset=None,
                 if verbosity: print('Done.')
             except:
                 if verbosity: print('Error.')
-        dt += DATETIME_DELTA
+        dt += TIME_DELTA
     pass
 
 import argparse
@@ -85,7 +85,7 @@ import dateutil.parser
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Download NARR 3-hourly product from NOMADS.')
     parser.add_argument('root', type=str,
-                        help='root directory for local storage (default: current directory)')
+                        help='root directory for local storage')
     parser.add_argument('-s', '--subset', choices=['a', 'b', 'ab'],
                         help='subset (default: ab)',
                         default='ab', type=str)
