@@ -3,8 +3,8 @@ F90FLAGS =
 LDFLAGS = -L/Volumes/Works/soft/lib
 LIBS = -lw3
 
-OBJS = fill_dswrf_narr.o
-EXE = fill_dswrf_narr.exe
+OBJS = filldswrf4ldas_narr.o
+EXE = filldswrf4ldas_narr.exe
 
 .SUFFIXES:
 .SUFFIXES: .o .f90
@@ -15,7 +15,7 @@ EXE = fill_dswrf_narr.exe
 $(EXE) : $(OBJS)
 	$(F90) -o $(EXE) $< $(LDFLAGS) $(LIBS)
 
-fill_dswrf_narr.o : fill_dswrf_narr.f90
+fill_dswrf_narr.o : filldswrf4ldas_narr.f90
 
 .PHONY: clean
 

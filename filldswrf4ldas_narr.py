@@ -11,7 +11,7 @@ import argparse
 import dateutil.parser
 import dateutil.rrule
 
-FILL_DSWRF_NARR_EXE = 'fill_dswrf_narr.exe'
+FILL_DSWRF_NARR_EXE = 'filldswrf4ldas_narr.exe'
 HOURDELTA = 3
 
 def fill_dswrf_narr(ipath, idt, root, flatdir=False):
@@ -97,7 +97,7 @@ if __name__ == '__main__':
                         help='explain what is being done', action='store_true')
     args = parser.parse_args()
 
-    main(root=args.root,
+    main(root=os.path.abspath(args.root),
          dtbeg=dateutil.parser.parse(args.begtime),
          dtend=dateutil.parser.parse(args.endtime),
          flatdir=args.flatdir,

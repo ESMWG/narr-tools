@@ -24,7 +24,7 @@ program fill_DSWRF
   if (command_argument_count() == 1) then
      call get_command_argument(1, finput)
   else                          ! command_argument_count() == 1
-     finput = 'fill_dswrf_narr.input'
+     finput = 'filldswrf4ldas_narr.input'
   end if
   
   open(20, file=trim(finput), action='read', form ='formatted')

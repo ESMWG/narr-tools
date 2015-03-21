@@ -92,7 +92,7 @@ if __name__ == '__main__':
                         help='end date and time (exclusive, default: 20140101T00)',
                         default='20140101T00', type=str)
     parser.add_argument('-f', '--flatdir',
-                        help='download all file into one directory',
+                        help='NARR data file in one directory',
                         default=False, action='store_true')
     args = parser.parse_args()
     

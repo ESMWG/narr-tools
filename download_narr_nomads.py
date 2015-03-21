@@ -106,7 +106,7 @@ if __name__ == '__main__':
     except:
         print('unable to write directory: ' + args.root, file=sys.stderr)
         sys.exit(1)
-    download_dataset(root=args.root,
+    download_dataset(root=os.path.abspath(args.root),
                      begtime=dateutil.parser.parse(args.begtime),
                      endtime=dateutil.parser.parse(args.endtime),
                      subset=args.subset,
