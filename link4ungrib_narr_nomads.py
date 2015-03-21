@@ -19,8 +19,8 @@ DIR_TMP = '{year:04d}{month:02d}/{year:04d}{month:02d}{day:02d}'
 FLNM_TMP = 'narr-{subset:1s}_221_{year:04d}{month:02d}{day:02d}_{hour:02d}00_000.grb'
 TIME_DELTA = datetime.timedelta(hours=3)
 
-def globfiles(srcroot=None, dtbeg=None, dtend=None, subset=None, flatdir=False):
-    """glob narr files"""
+def grabfiles(srcroot=None, dtbeg=None, dtend=None, subset=None, flatdir=False):
+    """grab narr files into list"""
     if (srcroot is None) or (dtbeg is None) or (dtend is None):
         return
     if not os.path.isdir(srcroot):
@@ -96,7 +96,7 @@ if __name__ == '__main__':
                         default=False, action='store_true')
     args = parser.parse_args()
     
-    files = globfiles(srcroot=args.srcroot,
+    files = grabfiles(srcroot=args.srcroot,
                       dtbeg=dateutil.parser.parse(args.begtime),
                       dtend=dateutil.parser.parse(args.endtime),
                       subset=args.subset,
