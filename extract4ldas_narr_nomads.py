@@ -27,11 +27,10 @@ def extract(ipatha, ipathb, outroot, dt, outflatdir=False):
     WGRIB_EXE = 'wgrib'
     VARIABLES = {'TSOIL' : ['0-10', '10-40', '40-100', '100-200'],
                  'SOILW' : ['0-10', '10-40', '40-100', '100-200'],
-                 'TMP'   : ['sfc'],
+                 'TMP'   : ['sfc', '30 m'],
                  'CNWAT' : ['sfc',],
                  'WEASD' : ['sfc',],
                  'PRES'  : ['30 m',],
-                 'TMP'   : ['30 m',],
                  'SPFH'  : ['30 m',],
                  'UGRD'  : ['30 m',],
                  'VGRD'  : ['30 m',],
@@ -57,6 +56,7 @@ def extract(ipatha, ipathb, outroot, dt, outflatdir=False):
                                                       inv=inv.replace(':','').replace(' ','')))
             # make output directory
             os.makedirs(os.path.dirname(opath), exist_ok=True)
+            print(opath)
             # ipatha
             inva = ''.join(x for x in io.StringIO(dumpa)
                            if ':{var:s}:{inv:s}'.format(var=var,inv=inv) in x)
@@ -81,7 +81,7 @@ def main(inroot=None, outroot=None, dtbeg=None, dtend=None,
                                    dtstart=dtbeg,
                                    until=dtend):
         if dt >= dtend: continue # exclude the dtend
-        print(dt.strftime('%Y-%m-%dT%H:%M:%S ... '), end='', flush=True)
+        if verbosity: print(dt.strftime('%Y-%m-%dT%H:%M:%S ... '), end='', flush=True)
         if inflatdir:
             ipatha = os.path.join(inroot,
                                   IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
@@ -103,13 +103,13 @@ def main(inroot=None, outroot=None, dtbeg=None, dtend=None,
                                                    hour=dt.hour,
                                                    subset='b'))
         if (not os.path.isfile(ipatha)) and (not os.path.isfile(ipathb)):
-            if verbosity : print('Error[file a b].')
+            if verbosity : print('Error[file ' + ipatha + ';' + ipathb +'].')
             continue
         elif not os.path.isfile(ipatha):
-            if verbosity: print('Error[file a].')
+            if verbosity: print('Error[file ' + ipatha + '].')
             continue
         elif not os.path.isfile(ipathb):
-            if verbosity: print('Error[file b].')
+            if verbosity: print('Error[file ' + ipathb + '].')
             continue
         extract(ipatha, ipathb, outroot, dt, outflatdir=outflatdir)
         if verbosity: print('Done.')
