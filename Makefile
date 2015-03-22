@@ -20,8 +20,5 @@ fill_dswrf_narr.o : filldswrf4ldas_narr.f90
 .PHONY: clean
 
 clean:
-	-rm -f $(OBJS)
-
-distclean: clean
-	-rm -f $(EXE)
+	-rm -f $(OBJS) $(EXE)
 
