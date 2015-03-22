@@ -1,19 +1,30 @@
+; To run the script type:
+;     ncl check_dswrf.ncl 'dataroot=DATAROOT; date=DATE'
+; e.g.
+;     ncl check_dswrf.ncl 'dateroot="extracted"' 'date=20120601'
+;
 load "$NCARG_ROOT/lib/ncarg/nclex/gsun/gsn_code.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"  
 
 begin
 
+  if ((.not. isvar("dataroot")) .or. (.not. isvar("date"))) then
+    print("usage: ncl check_dswrf.ncl dataroot=DATAROOT date=DATE")
+    exit
+  end if
+    
   lat2print = 100
   lon2print = 180
-  yyyy = "2012" 
-  mm = "06"  
-  dd = "01"
 
-  fine_path = "/Volumes/Works/data/narr/tools/nomads/extracted/DSWRF24/"
-  course_path = "/Volumes/Works/data/narr/tools/nomads/extracted/DSWRF/"
+  fine_path = dataroot + "/DSWRF24/"
+  course_path = dataroot + "/DSWRF/"
 
-  infiles = systemfunc("ls "+fine_path+"NARR_DSWRF24_sfc."+yyyy+mm+dd+"*.grb")
+  yyyy = sprinti("%0.4i", date / 10000)
+  mm = sprinti("%0.2i", (date / 100) % 100)
+  dd = sprinti("%0.2i", date % 100)
+
+  infiles = systemfunc("ls "+fine_path+"NARR_DSWRF_sfc0-1hr."+yyyy+mm+dd+"*.grb")
   hr_files = addfiles(infiles,"r")
   print(getfilevarnames(hr_files[1]))
 
