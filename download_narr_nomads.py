@@ -102,7 +102,7 @@ if __name__ == '__main__':
                         help='explain what is being done', action='store_true')
     args = parser.parse_args()
     try:
-        os.makedirs(root, exist_ok=True)
+        os.makedirs(args.root, exist_ok=True)
     except:
         print('unable to write directory: ' + args.root, file=sys.stderr)
         sys.exit(1)
