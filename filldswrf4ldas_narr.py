@@ -12,6 +12,8 @@ import dateutil.parser
 import dateutil.rrule
 
 FILL_DSWRF_NARR_EXE = 'filldswrf4ldas_narr.exe'
+NARRLAT = 'NARRLAT.txt'
+NARRLON = 'NARRLON.txt'
 HOURDELTA = 3
 
 def fill_dswrf_narr(ipath, idt, root, flatdir=False):
@@ -34,7 +36,7 @@ def fill_dswrf_narr(ipath, idt, root, flatdir=False):
             fin.flush()
         os.makedirs(os.path.dirname(opath), exist_ok=True)
         try:
-            subprocess.check_call([FILL_DSWRF_NARR_EXE, fin.name],
+            subprocess.check_call([FILL_DSWRF_NARR_EXE, NARRLAT, NARRLON, fin.name],
                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except Exception as e:
             raise e
@@ -59,7 +61,7 @@ def main(root=None, dtbeg=None, dtend=None,
                                  IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
                                                   hour=dt.hour))
         if (not os.path.isfile(ipath)):
-            if verbosity: print('Error.')
+            if verbosity: print('Error: file (' + ipath + ') does not exist!')
             continue
         
         try:
@@ -70,17 +72,22 @@ def main(root=None, dtbeg=None, dtend=None,
     return
 
 if __name__ == '__main__':
-    try:
-        if os.path.dirname(FILL_DSWRF_NARR_EXE) == '':
-            FILL_DSWRF_NARR_EXE = os.path.join(os.getcwd(), FILL_DSWRF_NARR_EXE)
-        subprocess.check_call([FILL_DSWRF_NARR_EXE],
-                              stdin=subprocess.DEVNULL,
-                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    except FileNotFoundError:
-        print('Unable to find executable: ' + FILL_DSWRF_NARR_EXE)
-        exit(1)
-    except subprocess.CalledProcessError:
-        pass
+    if os.path.dirname(FILL_DSWRF_NARR_EXE) == '':
+        FILL_DSWRF_NARR_EXE = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            FILL_DSWRF_NARR_EXE)
+    if os.path.dirname(NARRLAT) == '':
+        NARRLAT = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            NARRLAT)
+    if os.path.dirname(NARRLON) == '':
+        NARRLON = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            NARRLON)
+    for f in [FILL_DSWRF_NARR_EXE, NARRLAT, NARRLON]:
+        if not os.path.isfile(f):
+            print('Unable to find file: ' + f)
+            exit(1)
     parser = argparse.ArgumentParser(description='Fill hourly DSWRF from 3-hourly data.')
     parser.add_argument('root',
                         help='data root directory', type=str)

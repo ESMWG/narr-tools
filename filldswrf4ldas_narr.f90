@@ -1,9 +1,9 @@
 ! fill 1-hourly DSWRF from 3-hourly NARR output
-! usage: PROG [INPUTFILE, default:fill_dswrf_narr.input]
+! usage: PROG NARRLAT NARRLON INPUTFILE
 program fill_DSWRF
   implicit none
-  character(len=1024) :: finput
-  integer,parameter :: maxpts = 96673, lugbin = 10, lugi = 0
+  character(len=1024) :: finput, flat, flon
+  integer,parameter :: maxpts = 277 * 349, lugbin = 10, lugi = 0
   integer,parameter :: lugbout = 20
   integer,dimension(200)      :: jpds,jgds,kpds,kgds
   logical*1,dimension(maxpts) :: lb
@@ -17,15 +17,14 @@ program fill_DSWRF
 
   testpt = 76401
 
-  if (command_argument_count() > 1) then
+  if (command_argument_count() /= 3) then
      call get_command_argument(0, finput)
-     print *, 'Usage: ', trim(finput), ' INPUTFILE'
+     print *, 'Usage: ', trim(finput), 'NARRLAT NARRLON INPUTFILE'
+     return
   end if
-  if (command_argument_count() == 1) then
-     call get_command_argument(1, finput)
-  else                          ! command_argument_count() == 1
-     finput = 'filldswrf4ldas_narr.input'
-  end if
+  call get_command_argument(1, flat)
+  call get_command_argument(2, flon)
+  call get_command_argument(3, finput)
   
   open(20, file=trim(finput), action='read', form ='formatted')
   read(20,'(a100)') infile
@@ -35,14 +34,14 @@ program fill_DSWRF
   end do
   close(20)
 
-  open(30, file='NARR_lat', action='read', form ='formatted')
-  do i = 0,276
-     read(30,'(349f7.2)') lat( i*349+1 : i*349+349 )
+  open(30, file=trim(flat), action='read', form ='formatted')
+  do i = 1, maxpts
+     read(30, '(f8.3)') lat(i)
   end do
   close(30)
-  open(30, file='NARR_lon', action='read', form ='formatted')
-  do i = 0,276
-     read(30,'(349f8.2)') lon( i*349+1 : i*349+349 )
+  open(30, file=trim(flon), action='read', form ='formatted')
+  do i = 1, maxpts
+     read(30, '(f8.3)') lon(i)
   end do
   close(30)
 
@@ -164,6 +163,5 @@ contains
     where(cza.lt.0) cza = 0.0
 
   end subroutine get_cza
-
 
 end program fill_DSWRF
