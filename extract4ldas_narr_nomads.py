@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# extract variables from NOMADS obtained NARR for LDAS
+# extract atmopsheric forcing and state variables from NOMADS obtained NARR for LDAS
 # input data are located in INROOT
 # output in grib format and are located in OUTROOT
 # usage: PROG INROOT OUTROOT
