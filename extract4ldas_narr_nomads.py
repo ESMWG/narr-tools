@@ -56,7 +56,6 @@ def extract(ipatha, ipathb, outroot, dt, outflatdir=False):
                                                       inv=inv.replace(':','').replace(' ','')))
             # make output directory
             os.makedirs(os.path.dirname(opath), exist_ok=True)
-            print(opath)
             # ipatha
             inva = ''.join(x for x in io.StringIO(dumpa)
                            if ':{var:s}:{inv:s}'.format(var=var,inv=inv) in x)
