@@ -20,7 +20,7 @@ program fill_DSWRF
   if (command_argument_count() /= 3) then
      call get_command_argument(0, finput)
      print *, 'Usage: ', trim(finput), 'NARRLAT NARRLON INPUTFILE'
-     return
+     stop 1
   end if
   call get_command_argument(1, flat)
   call get_command_argument(2, flon)
