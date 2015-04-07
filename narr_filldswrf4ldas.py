@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# author: Hui ZHENG
+
 import os
 import os.path
 import signal
@@ -11,7 +13,7 @@ import argparse
 import dateutil.parser
 import dateutil.rrule
 
-FILL_DSWRF_NARR_EXE = 'filldswrf4ldas_narr.exe'
+FILL_DSWRF_NARR_EXE = 'narr_filldswrf4ldas.exe'
 NARRLAT = 'NARRLAT.txt'
 NARRLON = 'NARRLON.txt'
 HOURDELTA = 3
