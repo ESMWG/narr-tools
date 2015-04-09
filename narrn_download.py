@@ -76,7 +76,7 @@ def download_dataset(root='.', begtime=None, endtime=None, subset=None,
             except:
                 if verbosity: print('Error.')
         dt += TIME_DELTA
-    pass
+    return
 
 import argparse
 import dateutil.parser
