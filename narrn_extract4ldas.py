@@ -6,11 +6,8 @@
 # output in grib format and are located in OUTROOT
 # usage: PROG INROOT OUTROOT
 
-import sys
-import os
 import os.path
 import io
-import datetime
 import subprocess
 import dateutil.parser
 import dateutil.rrule

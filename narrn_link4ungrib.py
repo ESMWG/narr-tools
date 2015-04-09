@@ -4,10 +4,7 @@
 # create symbolic link (GRIBFILE.XXX) to NARR for using in ungrib
 # author: Hui ZHENG
 # email: woolf1988@qq.com
-# date: 2015-03-21
 
-import sys
-import os
 import os.path
 import glob
 import string

@@ -3,9 +3,7 @@
 
 # author: Hui ZHENG
 
-import os
 import os.path
-import signal
 import datetime
 import subprocess
 import tempfile

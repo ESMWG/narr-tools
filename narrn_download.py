@@ -5,21 +5,19 @@ from __future__ import absolute_import, unicode_literals, division, print_functi
 # description: Download NARR from nomads.
 # author: Hui ZHENG
 # email: woolf1988@qq.com
-# date: 2015-03-20
 
 import sys
-import os
 import os.path
 import urllib.request
 import urllib.error
 import subprocess
 import time
-from datetime import datetime, timedelta
+import datetime
 
 RROOT = 'ftp://nomads.ncdc.noaa.gov/NARR'
 DIR_TMP = '{year:04d}{month:02d}/{year:04d}{month:02d}{day:02d}'
 FLNM_TMP = 'narr-{subset:1s}_221_{year:04d}{month:02d}{day:02d}_{hour:02d}00_000.grb'
-TIME_DELTA = timedelta(hours=3)
+TIME_DELTA = datetime.timedelta(hours=3)
 
 def download_file(rpath, lpath):
     """
