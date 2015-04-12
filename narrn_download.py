@@ -27,7 +27,7 @@ def download_file(rpath, lpath):
     os.makedirs(os.path.dirname(lpath), exist_ok=True)
     
     # globus-url-copy
-    try :
+    try:
         DLD_EXE='globus-url-copy'
         DLD_OPT='-q'
         subprocess.check_call([DLD_EXE, DLD_OPT, rpath, lpath],

@@ -22,18 +22,18 @@ def extract(ipatha, ipathb, outroot, dt, outflatdir=False):
     ODIR_FMT = '{var:s}'
     OFLNM_FMT = 'NARR_{var}_{inv}.{year:04d}{month:02d}{day:02d}{hour:02d}.grb'
     WGRIB_EXE = 'wgrib'
-    VARIABLES = {'TSOIL' : ['0-10', '10-40', '40-100', '100-200'],
-                 'SOILW' : ['0-10', '10-40', '40-100', '100-200'],
-                 'TMP'   : ['sfc', '30 m'],
-                 'CNWAT' : ['sfc',],
-                 'WEASD' : ['sfc',],
-                 'PRES'  : ['30 m',],
-                 'SPFH'  : ['30 m',],
-                 'UGRD'  : ['30 m',],
-                 'VGRD'  : ['30 m',],
-                 'APCP'  : ['sfc'],
-                 'DLWRF' : ['sfc:0-3hr'],
-                 'DSWRF' : ['sfc:0-3hr']}
+    VARIABLES = {'TSOIL': ['0-10', '10-40', '40-100', '100-200'],
+                 'SOILW': ['0-10', '10-40', '40-100', '100-200'],
+                 'TMP': ['sfc', '30 m'],
+                 'CNWAT': ['sfc',],
+                 'WEASD': ['sfc',],
+                 'PRES': ['30 m',],
+                 'SPFH': ['30 m',],
+                 'UGRD': ['30 m',],
+                 'VGRD': ['30 m',],
+                 'APCP': ['sfc'],
+                 'DLWRF': ['sfc:0-3hr'],
+                 'DSWRF': ['sfc:0-3hr']}
     # dump inputs
     dumpa = subprocess.check_output([WGRIB_EXE, ipatha, '-s'], universal_newlines=True)
     dumpb = subprocess.check_output([WGRIB_EXE, ipathb, '-s'], universal_newlines=True)
@@ -78,28 +78,19 @@ def main(inroot=None, outroot=None, dtbeg=None, dtend=None,
                                    until=dtend):
         if dt >= dtend: continue # exclude the dtend
         if verbosity: print(dt.strftime('%Y-%m-%dT%H:%M:%S ... '), end='', flush=True)
+        iflnma = IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour,
+                                  subset='a')
+        iflnmb = IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour,
+                                  subset='b')
         if inflatdir:
-            ipatha = os.path.join(inroot,
-                                  IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
-                                                   hour=dt.hour,
-                                                   subset='a'))
-            ipathb = os.path.join(inroot,
-                                  IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
-                                                   hour=dt.hour,
-                                                   subset='b'))
+            ipatha = os.path.join(inroot, iflnma)
+            ipathb = os.path.join(inroot, iflnmb)
         else:
-            ipatha = os.path.join(inroot,
-                                  IDIR_FMT.format(year=dt.year, month=dt.month, day=dt.day),
-                                  IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
-                                                   hour=dt.hour,
-                                                   subset='a'))
-            ipathb = os.path.join(inroot,
-                                  IDIR_FMT.format(year=dt.year, month=dt.month, day=dt.day),
-                                  IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
-                                                   hour=dt.hour,
-                                                   subset='b'))
+            idir = IDIR_FMT.format(year=dt.year, month=dt.month, day=dt.day)
+            ipatha = os.path.join(inroot, idir, iflnma)
+            ipathb = os.path.join(inroot, idir, iflnmb)
         if (not os.path.isfile(ipatha)) and (not os.path.isfile(ipathb)):
-            if verbosity : print('Error[file ' + ipatha + ';' + ipathb +'].')
+            if verbosity: print('Error[file ' + ipatha + ';' + ipathb +'].')
             continue
         elif not os.path.isfile(ipatha):
             if verbosity: print('Error[file ' + ipatha + '].')

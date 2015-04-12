@@ -23,14 +23,11 @@ def fill_dswrf_narr(ipath, idt, root, flatdir=False):
         fin.write(ipath+'\n')
         for ihr in range(HOURDELTA):
             dt = idt + datetime.timedelta(hours=ihr)
+            oflnm = OFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour)
             if flatdir:
-                opath = os.path.join(root,
-                                     OFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
-                                                      hour=dt.hour))
+                opath = os.path.join(root, oflnm)
             else:
-                opath = os.path.join(root, ODIR,
-                                     OFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
-                                                      hour=dt.hour))
+                opath = os.path.join(root, ODIR, oflnm)
             fin.write(opath+'\n')
             fin.write(dt.strftime('%y %m %d %H %j %H\n'))
             fin.flush()
@@ -48,27 +45,28 @@ def main(root=None, dtbeg=None, dtend=None,
     IFLNM_FMT = 'NARR_DSWRF_sfc0-3hr.{year:04d}{month:02d}{day:02d}{hour:02d}.grb'
     if (root is None) or (dtbeg is None) or (dtend is None):
         return
-    for dt in dateutil.rrule.rrule(dateutil.rrule.HOURLY, interval=HOURDELTA,
-                                   dtstart=dtbeg, until=dtend):
-        if dt >= dtend : continue # exclude dtend
-        if verbosity : print(dt.strftime('%Y-%m-%dT%H:%M:%S ... '), end='', flush=True)
+    for dt in dateutil.rrule.rrule(dateutil.rrule.HOURLY,
+                                   interval=HOURDELTA,
+                                   dtstart=dtbeg,
+                                   until=dtend):
+        if dt >= dtend:
+            continue # exclude dtend
+        if verbosity:
+            print(dt.strftime('%Y-%m-%dT%H:%M:%S ... '), end='', flush=True)
+        iflnm = IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour)
         if flatdir:
-            ipath = os.path.join(root,
-                                 IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
-                                                  hour=dt.hour))
+            ipath = os.path.join(root, iflnm)
         else:
-            ipath = os.path.join(root, IDIR,
-                                 IFLNM_FMT.format(year=dt.year, month=dt.month, day=dt.day,
-                                                  hour=dt.hour))
+            ipath = os.path.join(root, IDIR, iflnm)
         if (not os.path.isfile(ipath)):
             if verbosity: print('Error: file (' + ipath + ') does not exist!')
             continue
         
         try:
             fill_dswrf_narr(ipath, dt, root, flatdir=flatdir)
-            if verbosity : print('Done.')
+            if verbosity: print('Done.')
         except:
-            if verbosity : print('Error.')
+            if verbosity: print('Error.')
     return
 
 if __name__ == '__main__':
