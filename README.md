@@ -1,2 +1,2 @@
 # narr-tools
-Tools for downloading, extracting, & analyzing North American Regional Reanalysis (NARR) data.
+Download, extract, and analyze North American Regional Reanalysis (NARR) data.
