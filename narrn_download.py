@@ -33,7 +33,7 @@ def download_file(rpath, lpath):
         subprocess.check_call([DLD_EXE, DLD_OPT, rpath, lpath],
                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         return
-    except:
+    except Exception:
         pass
         
     # urllib
@@ -73,7 +73,9 @@ def download_dataset(root='.', begtime=None, endtime=None, subset=None,
             try:
                 download_file(rpath, lpath)
                 if verbosity: print('Done.')
-            except:
+            except KeyboardInterrupt as e:
+                return
+            except Exception:
                 if verbosity: print('Error.')
         dt += TIME_DELTA
     return

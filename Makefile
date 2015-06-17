@@ -1,4 +1,4 @@
-F90 = gfortran-4.9
+F90 = gfortran
 F90FLAGS =
 LDFLAGS = -L/Volumes/Works/soft/lib
 LIBS = -lw3
